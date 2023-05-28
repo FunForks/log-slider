@@ -14,11 +14,16 @@ body {
   justify-content: center;
   align-items: center;
 
-  --width: 520px;
+  --width: 360px;
 }
 
 h1 {
   width: var(--width);
+  font-size: 1.1rem;
+}
+
+br {
+  margin-top: 1rem;
 }
 
 .slider {

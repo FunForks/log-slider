@@ -13,7 +13,7 @@ export const Header = () => {
 
   return (
     <h1>
-      React Slider value: {stringValue}
+      Logarithmic Slider value: {stringValue}
     </h1>
   )
 }

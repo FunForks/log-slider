@@ -22,6 +22,7 @@ export const Thumb = ({
       className={`${className} thumb`}
       style={style }
       onMouseDown={startDrag}
+      onTouchStart={startDrag}
     />
   )
 }
@@ -58,21 +59,39 @@ export const Slider = () => {
   }
 
 
-  const startDrag = ({ pageX, target }) => {
+  const getPageX = (event) => {
+    if (event.targetTouches && event.targetTouches.length) {
+      event = event.targetTouches[0] || {}
+    }
+
+    return event.pageX
+  }
+
+
+  const startDrag = (event) => {
+    const pageX = getPageX(event)
+
+    const { target, type } = event
+    const isTouchEvent = type === "touchstart"
+    const dragEvent = isTouchEvent ? "touchmove" : "mousemove"
+    const dropEvent = isTouchEvent ? "touchend" : "mouseup"
+
     const index = target.classList.contains("right") + 0
     const left = pxs[index] + index * size
     const offset = left - pageX      // constant in closure
     let closureValue = values[index] // can be updated in closure
 
     const limits = index
-    ? { min: pxs[0] + size * 2.5, max: maxX }
+    ? { min: pxs[0] + size * 2.2, max: maxX }
     : { min: 0, max: pxs[1] - size }
 
 
     /**
      * drag() is triggered by mousemove events
      */
-    const drag = ({ pageX }) => {
+    const drag = (event) => {
+      const pageX = getPageX(event)
+
       const left = Math.max(
         limits.min,
         Math.min(
@@ -94,12 +113,12 @@ export const Slider = () => {
      * drop() is triggered by a mouseup event
      */
     const drop = () => {
-      document.body.removeEventListener("mousemove", drag, false)
+      document.body.removeEventListener(dragEvent, drag, false)
     }
 
     // Start receiving mouse events until the mouse is released
-    document.body.addEventListener("mousemove", drag, false)
-    document.body.addEventListener("mouseup", drop, {once: true})
+    document.body.addEventListener(dragEvent, drag, false)
+    document.body.addEventListener(dropEvent, drop, {once: true})
   }
 
 
