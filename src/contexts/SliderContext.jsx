@@ -6,37 +6,63 @@
  */
 
 import { createContext, useState } from 'react'
+import {
+  setMax,
+  getEnds,
+  getValues,
+  getAdjusted
+} from './ranger.js'
+
+
+
+const { maxRatio} = setMax(69999) // 1 less than what MAX will be
+
 
 
 export const SliderContext = createContext()
 
 
+
 export const SliderProvider = ({ children }) => {
-  const getValue = ends => `${ends[0]} - ${ends[1]}`
+  // <<< HARD-CODED
+  const defaultValues = [1000, 5000]
+  // HARD-CODED >>>
 
-  // setMaxValue is not shared in this demo, because there is
-  // no need to change maxValue.
-  const [ maxValue, setMaxValue ] = useState(100)
-  const [ ends, setEnds ] = useState([20, 50])
-  const [ value, setValue ] = useState(() => getValue(ends))
+  const getStringValue = values => {
+    return `${values[0]} - ${values[1]}`
+  }
+
+  const [ rangeData, setRangeData ] = useState(() => (
+    {
+      values: defaultValues,
+      stringValue: getStringValue(defaultValues),
+      ends: getEnds(defaultValues),
+    }
+  ))
 
 
-  const setEnd = (value, end) => {
-    const next = end
-               ? [ ends[0], value ]
-               : [ value, ends[1]]
-    setEnds(next)
-    setValue(getValue(next))
+  const setEnd = (ratio, end) => {
+    const { ends } = rangeData
+
+    if (end) {
+      ends[1] = Math.min(ratio, maxRatio)
+    } else {
+      ends[0] = ratio
+    }
+    
+    const values = getValues(ends)
+    const stringValue = getStringValue(values)    
+
+    setRangeData({ values, stringValue, ends})
   }
 
 
   return (
     <SliderContext.Provider
       value = {{
-        maxValue,
-        value,
-        ends,
-        setEnd
+        rangeData,
+        setEnd,
+        getAdjusted
       }}
     >
       {children}
