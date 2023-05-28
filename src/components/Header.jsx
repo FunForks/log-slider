@@ -8,11 +8,12 @@ import { SliderContext } from "../contexts/SliderContext"
 
 
 export const Header = () => {
-  const { value } = useContext(SliderContext)
+  const { rangeData } = useContext(SliderContext)
+  const { stringValue } = rangeData
 
   return (
     <h1>
-      React Slider value: {value}
+      React Slider value: {stringValue}
     </h1>
   )
 }
