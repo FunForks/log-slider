@@ -18,13 +18,13 @@
  *
  * The slider will show words in blocks of similar frequencies:
  * - The first 100 words are assumed to be known
- * Levels A1 and A2
+ * Levels A1 (500) and A2 (1000)
  * - Intervals at 200, 300, ... 1000
  * - Intervals at 1200, 1400, 1600, 1800, 2000
- * Levels B1 and B2
+ * Levels B1 (2000) and B2 (4000)
  * - Intervals at 2500, 3000, 3500, 4000, 4500, 5000
  * - Intervals at 6000, 7000, 8000, 9000, 10000
- * Levels C1 and C2
+ * Levels C1 (8000), C2 (16000) and near-native
  * - Intervals at 12000, 14000, 16000, 18000, 20000
  * - Intervals at 25000, 30000, 35000, 40000, 45000, 50000
  * Articulate native speaker
